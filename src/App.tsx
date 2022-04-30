@@ -10,10 +10,18 @@ function App() {
     setGameActive(true);
   };
 
+  const endTrivia = () => {
+    setGameActive(false);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        {!gameActive ? <Start startTrivia={startTrivia} /> : <TriviaArea />}
+        {!gameActive ? (
+          <Start startTrivia={startTrivia} />
+        ) : (
+          <TriviaArea endTrivia={endTrivia} />
+        )}
       </header>
     </div>
   );

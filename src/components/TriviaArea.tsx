@@ -7,7 +7,11 @@ import { Trivia } from "./Trivia";
 import { useSelector } from "react-redux";
 import { selectSetup } from "../redux/store";
 
-export const TriviaArea = () => {
+interface props {
+  endTrivia: () => void;
+}
+
+export const TriviaArea = ({ endTrivia }: props) => {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const setup = useSelector(selectSetup);
@@ -23,38 +27,53 @@ export const TriviaArea = () => {
 
   if (!setup.triviaQuestions) return <>Loading</>;
   else {
-    return (
-      <Container sx={{ height: "100vh", p: 0 }}>
-        <DialogTitle>{`Question ${activeStep + 1}`}</DialogTitle>
-        <Box sx={{ height: "auto", width: "100%", paddingBottom: "50px" }}>
-          {setup.triviaQuestions && (
-            <Trivia trivia={setup.triviaQuestions[activeStep]} />
-          )}
-        </Box>
-        <MobileStepper
-          variant="text"
-          steps={parseInt(maxSteps)}
-          position="bottom"
-          activeStep={activeStep}
-          nextButton={
-            <Button
-              size="small"
-              onClick={handleNext}
-              disabled={activeStep === maxSteps - 1}
-            >
-              Next
-              {theme.direction === "rtl" ? (
-                <KeyboardArrowLeft />
-              ) : (
-                <KeyboardArrowRight />
-              )}
-            </Button>
-          }
-          backButton={
-            <Button size="small" onClick={handleBack} disabled={true}></Button>
-          }
-        />
-      </Container>
-    );
+    if (setup.triviaQuestions.length === 0)
+      return (
+        <>
+          <DialogTitle>No questions found</DialogTitle>
+          <Button size="large" variant="contained" onClick={endTrivia}>
+            Change settings
+          </Button>
+        </>
+      );
+    else {
+      return (
+        <Container sx={{ height: "100vh", p: 0 }}>
+          <DialogTitle>{`Question ${activeStep + 1}`}</DialogTitle>
+          <Box sx={{ height: "auto", width: "100%", paddingBottom: "50px" }}>
+            {setup.triviaQuestions && (
+              <Trivia trivia={setup.triviaQuestions[activeStep]} />
+            )}
+          </Box>
+          <MobileStepper
+            variant="text"
+            steps={parseInt(maxSteps)}
+            position="bottom"
+            activeStep={activeStep}
+            nextButton={
+              <Button
+                size="small"
+                onClick={handleNext}
+                disabled={activeStep === maxSteps - 1}
+              >
+                Next
+                {theme.direction === "rtl" ? (
+                  <KeyboardArrowLeft />
+                ) : (
+                  <KeyboardArrowRight />
+                )}
+              </Button>
+            }
+            backButton={
+              <Button
+                size="small"
+                onClick={handleBack}
+                disabled={true}
+              ></Button>
+            }
+          />
+        </Container>
+      );
+    }
   }
 };

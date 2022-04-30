@@ -56,7 +56,7 @@ export const Settings = () => {
         <TextField
           onChange={handleAmount}
           color="info"
-          defaultValue={setup.questionAmount <= 50 ? setup.questionAmount : 50}
+          defaultValue={setup.questionAmount <= 20 ? setup.questionAmount : 20}
           id="standard-size-normal"
           variant="outlined"
           focused
