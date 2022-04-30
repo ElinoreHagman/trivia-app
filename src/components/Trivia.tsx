@@ -13,6 +13,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import { useEffect, useState } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { decode } from "html-entities";
 
 interface props {
   trivia: TriviaType;
@@ -50,7 +51,7 @@ export const Trivia = ({ trivia }: props) => {
     <Card sx={{ margin: 5 }}>
       <DialogTitle>{trivia.category}</DialogTitle>
       <DialogContent>
-        <DialogContentText>{trivia.question}</DialogContentText>
+        <DialogContentText>{decode(trivia.question)}</DialogContentText>
         <List
           sx={{
             width: "100%",
@@ -77,7 +78,7 @@ export const Trivia = ({ trivia }: props) => {
                     showAnswer &&
                     !answer.valid && <ClearIcon color="error" />}
                 </ListItemIcon>
-                <ListItemText primary={answer.text} />
+                <ListItemText primary={decode(answer.text)} />
               </ListItemButton>
             );
           })}
