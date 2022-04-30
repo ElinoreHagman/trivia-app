@@ -1,8 +1,8 @@
 {
-  "name": "trivia-project",
+  "name": "trivia-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://ElinoreHagman.github.io/trivia-project",
+  "homepage": "http://ElinoreHagman.github.io/trivia-app",
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
