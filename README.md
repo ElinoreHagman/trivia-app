@@ -13,6 +13,6 @@ Choose what kind of questions you want the trivia game to consist of, and how ma
 This project uses one API as external source
 | Resource | Link |
 | ------ | ------ |
-| Trivia API | [https://opentdb.com/api_config.php][1] |
+| THE TRIVIA API | [https://the-trivia-api.com/][1] |
 
-[1]: https://opentdb.com/api_config.php
+[1]: https://the-trivia-api.com/

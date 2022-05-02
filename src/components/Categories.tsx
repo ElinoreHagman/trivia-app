@@ -3,11 +3,11 @@ import { Box, Chip, CircularProgress } from "@mui/material";
 import { CategoryType } from "../types/CategoryType";
 import { getCategories } from "../apis/getCategories";
 import { useDispatch, useSelector } from "react-redux";
-import { selectSetup, addCategory, addCategoryName } from "../redux/store";
+import { selectSetup, addCategory } from "../redux/store";
 
 export const Categories = () => {
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<CategoryType[] | null>(null);
+  const [data, setData] = useState<string[] | null>(null);
   const dispatch = useDispatch();
   const setup = useSelector(selectSetup);
 
@@ -24,12 +24,11 @@ export const Categories = () => {
     fetchCategories();
   }, []);
 
-  const handleClick = (categoryId: number, categoryName: string) => {
-    dispatch(addCategory(categoryId));
-    dispatch(addCategoryName(categoryName));
+  const handleClick = (categoryName: string) => {
+    dispatch(addCategory(categoryName));
   };
 
-  if (loading) {
+  if (!data) {
     return <CircularProgress />;
   } else {
     return (
@@ -47,15 +46,17 @@ export const Categories = () => {
             },
           }}
         >
-          {data?.map((category: CategoryType) => {
+          {data?.map((category: string, index: number) => {
             return (
               <Chip
-                key={category.id}
+                key={index}
                 color={
-                  category.id === setup.questionCategory ? "success" : "primary"
+                  setup.questionCategories.includes(category)
+                    ? "success"
+                    : "primary"
                 }
-                onClick={() => handleClick(category.id, category.name)}
-                label={category.name}
+                onClick={() => handleClick(category)}
+                label={category}
               />
             );
           })}

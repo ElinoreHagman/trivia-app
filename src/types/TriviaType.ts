@@ -3,6 +3,6 @@ export interface TriviaType {
     type: string,
     difficulty: string,
     question: string,
-    correct_answer: string,
-    incorrect_answers : string[]
+    correctAnswer: string,
+    incorrectAnswers : string[]
 }

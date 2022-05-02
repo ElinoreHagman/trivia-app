@@ -30,6 +30,17 @@ export const ReadyTrivia = ({ startTrivia }: props) => {
     startTrivia();
   };
 
+  let categoriesListed: string = "";
+  setup.questionCategories.map((category) => {
+    categoriesListed += `${category}`;
+    if (
+      setup.questionCategories.indexOf(category) <
+      setup.questionCategories.length - 1
+    ) {
+      categoriesListed += `, `;
+    }
+  });
+
   return (
     <>
       <Grid
@@ -54,9 +65,7 @@ export const ReadyTrivia = ({ startTrivia }: props) => {
             <ListItemIcon>
               <CategoryIcon color="info" />
             </ListItemIcon>
-            <ListItemText
-              primary={`Category: ${setup.categoryName || "no preference"}`}
-            />
+            <ListItemText primary={`Categories: ${categoriesListed}`} />
           </ListItem>
           <ListItem>
             <ListItemIcon>

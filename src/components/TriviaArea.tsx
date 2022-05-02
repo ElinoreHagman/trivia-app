@@ -1,6 +1,13 @@
-import { Box, Button, Container, DialogTitle, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  DialogTitle,
+  useTheme,
+} from "@mui/material";
 import MobileStepper from "@mui/material/MobileStepper";
-import React from "react";
+import React, { useEffect } from "react";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import { Trivia } from "./Trivia";
@@ -14,6 +21,7 @@ interface props {
 export const TriviaArea = ({ endTrivia }: props) => {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
+  const [endGame, setEndGame] = React.useState(false);
   const setup = useSelector(selectSetup);
   const maxSteps: any = setup.questionAmount;
 
@@ -21,11 +29,11 @@ export const TriviaArea = ({ endTrivia }: props) => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
+  useEffect(() => {
+    if (activeStep === maxSteps - 1) setEndGame(true);
+  }, [activeStep]);
 
-  if (!setup.triviaQuestions) return <>Loading</>;
+  if (!setup.triviaQuestions) return <CircularProgress />;
   else {
     if (setup.triviaQuestions.length === 0)
       return (
@@ -43,6 +51,11 @@ export const TriviaArea = ({ endTrivia }: props) => {
           <Box sx={{ height: "auto", width: "100%", paddingBottom: "50px" }}>
             {setup.triviaQuestions && (
               <Trivia trivia={setup.triviaQuestions[activeStep]} />
+            )}
+            {endGame && (
+              <Button size="large" variant="contained" onClick={endTrivia}>
+                End Game
+              </Button>
             )}
           </Box>
           <MobileStepper
@@ -64,13 +77,7 @@ export const TriviaArea = ({ endTrivia }: props) => {
                 )}
               </Button>
             }
-            backButton={
-              <Button
-                size="small"
-                onClick={handleBack}
-                disabled={true}
-              ></Button>
-            }
+            backButton={<Button size="small" disabled={true}></Button>}
           />
         </Container>
       );

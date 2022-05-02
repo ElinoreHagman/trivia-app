@@ -14,6 +14,10 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { useEffect, useState } from "react";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { decode } from "html-entities";
+import { addResult } from "../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { selectSetup } from "../redux/store";
+import { Countdown } from "./timer";
 
 interface props {
   trivia: TriviaType;
@@ -25,11 +29,14 @@ interface Answer {
 }
 
 export const Trivia = ({ trivia }: props) => {
+  const dispatch = useDispatch();
+  const setup = useSelector(selectSetup);
+
   let answers: Answer[] = [];
-  trivia.incorrect_answers.map((answer: string) => {
+  trivia.incorrectAnswers.map((answer: string) => {
     return answers.push({ text: answer, valid: false });
   });
-  answers.push({ text: trivia.correct_answer, valid: true });
+  answers.push({ text: trivia.correctAnswer, valid: true });
   answers.sort((a: Answer, b: Answer) => {
     return a.text.localeCompare(b.text);
   });
@@ -40,11 +47,21 @@ export const Trivia = ({ trivia }: props) => {
   useEffect(() => {
     setShowAnswer(false);
     setChosenAnswer("");
+    setFinished(false);
   }, [trivia]);
 
-  const revealAnswer = (answer: string) => {
+  const revealAnswer = (answer: string, valid: boolean) => {
     setShowAnswer(true);
     setChosenAnswer(answer);
+    if (valid) dispatch(addResult());
+  };
+
+  const [finished, setFinished] = useState(false);
+
+  const stopTimer = () => {
+    console.log("stop");
+    setFinished(true);
+    setShowAnswer(true);
   };
 
   return (
@@ -64,7 +81,7 @@ export const Trivia = ({ trivia }: props) => {
             return (
               <ListItemButton
                 key={answer.text}
-                onClick={() => revealAnswer(answer.text)}
+                onClick={() => revealAnswer(answer.text, answer.valid)}
                 disabled={showAnswer}
               >
                 <ListItemIcon>
@@ -83,6 +100,12 @@ export const Trivia = ({ trivia }: props) => {
             );
           })}
         </List>
+
+        {/* <Countdown
+          trivia={trivia.question}
+          finished={finished}
+          stopTimer={() => stopTimer}
+        /> */}
       </DialogContent>
     </Card>
   );

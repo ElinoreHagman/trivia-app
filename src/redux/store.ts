@@ -3,38 +3,33 @@ import { Difficulties, Types } from "../enums/ApiTypes";
 import { TriviaType } from "../types/TriviaType";
 
 export interface Setup {
-    categoryName: string | null,
-    questionCategory: number | null,
+    questionCategories: string[],
     questionAmount: number,
     questionDifficulty: Difficulties | null,
     questionType: Types | null,
     triviaQuestions: TriviaType[] | null,
+    result: number,
+
 }
 
 const initialState : Setup = {
-    categoryName: null,
-    questionCategory: null,
+    questionCategories: [],
     questionAmount: 1,
     questionDifficulty: null,
     questionType: null,
-    triviaQuestions: null
+    triviaQuestions: null,
+    result: 0
 }
 
 const setupSlice = createSlice({
   name: 'setup',
   initialState,
   reducers: {
-    addCategory(state, action: PayloadAction<number | null>) {
-      state.questionCategory = action.payload;
-    },
-    addCategoryName(state, action: PayloadAction<string | null>) {
-      state.categoryName = action.payload;
+    addCategory(state, action: PayloadAction<string>) {
+      state.questionCategories.push(action.payload);
     },
     addDifficulty(state, action: PayloadAction<Difficulties>) {
       state.questionDifficulty = action.payload || null;
-    },
-    addType(state, action: PayloadAction<Types>) {
-      state.questionType = action.payload || null;
     },
     addAmount(state, action: PayloadAction<number>) {
       state.questionAmount = action.payload;
@@ -42,10 +37,16 @@ const setupSlice = createSlice({
     addTriviaQuestions(state, action: PayloadAction<TriviaType[]>) {
       state.triviaQuestions = action.payload;
     },
+    addResult(state) {
+      state.result += 1;
+    },
+    clearState(state) {
+      state = initialState;
+    },
   },
 })
 
-export const { addCategory, addCategoryName, addDifficulty, addType, addAmount, addTriviaQuestions } = setupSlice.actions
+export const { addCategory, addDifficulty, addAmount, addTriviaQuestions, addResult, clearState } = setupSlice.actions
 
 const store = configureStore({
     reducer: {
